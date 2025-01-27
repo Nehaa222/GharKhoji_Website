@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <div><b>RentMate</b></div>
+        <nav>
+            <ul>
+                <li>Home</li>
+                <li>Properties</li>
+                <li>About Us</li>
+                <li>Contact Us</li>
+                <li>Register Property</li>
+                <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="main-image">
+        <div><b>Welcome to RentMate</b></div>
+    </section>
+    <main>
+        <h2 class="section-title">Featured Property</h2>
+        <div class="featured-hostels">
+            <div class="card">
+                <img src="{% static 'img/image.jpg' %}" alt="Hostel 1">
+            </div>
+            <div class="card">
+                <img src="{% static 'img/image.jpg' %}" alt="Hostel 1">
+            </div>
+            <div class="card">
+                <img src="{% static 'img/image.jpg' %}" alt="Hostel 1">
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2025 GharKhoji. All rights reserved.
+    </footer>
+</body>
+</html>
