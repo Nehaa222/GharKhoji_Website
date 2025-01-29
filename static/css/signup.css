@@ -6,8 +6,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f8f8f8;
-    background: #B2C9AD;
     background: url("/static/img/image.jpg") no-repeat center center fixed;
     background-size: cover;
 }

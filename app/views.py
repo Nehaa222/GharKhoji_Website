@@ -34,3 +34,9 @@ def LoginPage(request):
 def LogoutPage(request):
     logout(request)
     return redirect('login')
+
+def AboutPage(request):
+    return render(request, 'aboutus.html')
+
+def ContactPage(request):
+    return render(request, 'contactus.html')

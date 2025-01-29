@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/aboutus.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="{% static 'img/Logo.png' %}" alt="GharKhoji Logo">
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Hostels</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Register Property</a></li>
+                <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="image">
+            <div class="hostel-image-container">
+                <img src="{% static 'aboutimg/about.jpg' %}" alt="GharKhoji Banner">
+                <h1>About Us</h1>
+                <p>Get to know us properly.</p>
+            </div>
+        </section>
+
+        <section class="intro-section">
+            <div class="intro-box">
+                <div class="intro-text">
+                    <h2>Welcome to GharKhoji</h2>
+                    <p>
+                        GharKhoji is a website that helps individuals find and book hostels in Kathmandu. It simplifies the process for both hostel owners and residents, providing a platform that connects them efficiently. We understand the challenges that both hostel owners and residents face daily, and our goal is to make the experience smoother with your valuable support. We believe that our partnership will continue to grow stronger with mutual trust.<br><br>
+
+                        Currently, GharKhoji lists a variety of hostels in Kathmandu on our platform, where students and residents can browse, view details, and book accommodation. The website provides essential information such as the hostel's address, contact numbers, photos, meal plans, services, Google Maps location, and more. Hostel owners can upload their details, and prospective residents can check the options and book rooms that meet their preferences. Booking can be done through phone calls, emails, or directly online, and the hostel owner will receive a booking alert via SMS for immediate confirmation. Additionally, GharKhoji provides a directory of contact details for officials of the Kathmandu Hostel Association, including information about the central committee, district committees, and specific hostels.<br><br>
+
+                        GharKhoji is dedicated to offering detailed information about hostels in Kathmandu, making it easier for everyone to find the right place. Your feedback and suggestions are always welcome and highly appreciated as they help improve the platform. We encourage all hostel owners in Kathmandu to register their hostels on GharKhoji today! Once registered, hostel owners will receive a user ID and password, allowing them to manage and update their hostel information. The platform also provides a Hostel Management System package, which helps owners manage locations, rooms, beds, and student details securely and efficiently. All data can be accessed easily via mobile or computer for convenient management.<br><br>
+                    </p>
+                    <p>
+                        <b>Register your hostel today on GharKhoji—your go-to website for hostel bookings and management in Kathmandu!</b>
+                    </p>
+                </div>
+                <div class="intro-image">
+                    <img src="{% static 'aboutimg/image.jpg' %}" alt="GharKhoji Intro Image">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <h3>Gharkhoji</h3>
+            <p>Gharkhoji is a platform that helps you find the best hostels for your stay. With a user-friendly interface, easy navigation, and comprehensive options, we aim to provide you with the perfect accommodation experience.</p>
+          </div>
+          <div class="footer-right">
+            <div class="contact-info">
+              <p>Address: Kathmandu, Nepal</p>
+              <p>Phone: +977 123 456 789</p>
+              <p>Email: info@gharkhoji.com</p>
+            </div>
+            <div class="social-icons">
+              <a href="#" target="_blank">
+                <img src="{% static 'img/facebook.png' %}" alt="Facebook" class="social-icon">
+              </a>
+              <a href="#" target="_blank">
+                <img src="{% static 'img/instagram.png' %}" alt="Instagram" class="social-icon">
+              </a>
+              <a href="#" target="_blank">
+                <img src="{% static 'img/twitter.png' %}" alt="Twitter" class="social-icon">
+              </a>
+              <a href="#" target="_blank">
+                <img src="{% static 'img/youtube.png' %}" alt="YouTube" class="social-icon">
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+
+</body>
+</html>
