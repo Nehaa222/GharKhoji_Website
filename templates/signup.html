@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 </head>
 <body>
-    <form action="#" method="post">
+    <form action="#" method="POST">
         {% csrf_token %}
         <div class="container">
             <div class="form-section">
                 <h1>Sign up to discover your ideal stay!</h1>
-                <p>Sign up to agree to the use of your information.</p>  
-                <input type="username" placeholder="Username" id="username" name="username">
+                <p>Sign up to agree to the use of your information.</p>
+                <input type="firstname" placeholder="FirstName" id="firstname" name="firstname">
+                <input type="lastname" placeholder="LastName" id="lastname" name="lastname">
                 <input type="email" placeholder="Email" id="email" name="email">
+                <input type="username" placeholder="Username" id="username" name="username">
                 <input type="password" placeholder="Password" id="password" name="password">
                 <input type="confirmpassword" placeholder="Confirm Password" id="confirmpassword" name="confirmpasssword">
                 <button type="submit" class="signup-button">Sign Up</button>
