@@ -1,3 +1,7 @@
+home.html
+
+home.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,21 +11,22 @@
     
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="logo">
             <a href="#">
-                <img src="{% static 'img/Logo.png' %}" alt="GharKhoji Logo">
+                <img src="{% static 'img/logo1.png' %}" alt="GharKhoji Logo">
             </a>
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Hostels</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Register Property</a></li>
+                <li class="{% if request.path == '/home/' %} active {% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                <li class="{% if request.path == '/hostels/' %} active {% endif %}"><a href="{% url 'hostels' %}">Hostels</a></li>
+                <li class="{% if request.path == '/aboutus/' %} active {% endif %}"><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li class="{% if request.path == '/contactus/' %} active {% endif %}"><a href="{% url 'contactus' %}">Contact Us</a></li>
+                <li><a href="#">Register Hostel</a></li>
                 <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
             </ul>
         </nav>
@@ -30,7 +35,7 @@
     <main>
         <section class="image">
             <div class="hostel-image-container">
-                <img src="{% static 'img/signup.jpg' %}" alt="GharKhoji Banner">
+                <img src="{% static 'img/hostel1.png' %}" alt="GharKhoji Banner">
             </div>
         </section>
          
@@ -41,79 +46,26 @@
                 <h4>View More</h4>
             </div>
             <div class="outer-card">
-                <div class="inner-card">
+                {% for hostel in hostels %}
+                  <div class="inner-card">
                     <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 1">
+                      <img src="{{ hostel.image1.url }}" alt="{{ hostel.title }}">
                     </div>
                     <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
+                      <p>{{ hostel.title }}</p>
+                      <span><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</span>
+                      <span><i class="fa-solid fa-phone"></i> {{ hostel.phone_number }}</span>
                     </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/girlshostel.jpg' %}" alt="Hostel 2">
+                    <div class="view-details-container">
+                      <a href="{% url 'hosteldetails' hostel.id %}"><button class="view-details-btn">View Details</button></a>
                     </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 3">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/girlshostel1.jpg' %}" alt="Hostel 1">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 1">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 1">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 1">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-                <div class="inner-card">
-                    <div class="image-wrapper">
-                        <img src="{% static 'img/boyshostel1.jpg' %}" alt="Hostel 1">
-                    </div>
-                    <div class="content">
-                        <p>The Best</p>
-                        <span>Naxal</span>
-                    </div>
-                </div>
-            </div>
+                  </div>
+                {% empty %}
+                  <p>No hostels available at the moment.</p>
+                {% endfor %}
+              </div>
+              
+              
         </section>
         <section class="explore-section">
             <div class="explore-content">
@@ -130,7 +82,9 @@
                   <li>Verified reviews from real users</li>
                   <li>Competitive pricing and special offers</li>
                 </ul>
-                <button class="view-more-btn">View More</button>
+                <a href="{% url 'aboutus' %}">
+                    <button class="view-more-btn">View More</button>
+                </a>
               </div>
               <div class="explore-image">
                 <img src="{% static 'img/login.jpg' %}" alt="Explore Gharkhoji" class="explore-img">
@@ -148,33 +102,47 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-content">
-          <div class="footer-left">
-            <h3>Gharkhoji</h3>
-            <p>Gharkhoji is a platform that helps you find the best hostels for your stay. With a user-friendly interface, easy navigation, and comprehensive options, we aim to provide you with the perfect accommodation experience.</p>
-          </div>
-          <div class="footer-right">
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3>Gharkhoji</h3>
+          <p>Gharkhoji is a platform that helps you find the best hostels for your stay. With a user-friendly interface, easy navigation, and comprehensive options, we aim to provide you with the perfect accommodation experience.</p>
+        </div>
+        <!-- Quick Links -->
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#Hostels">Hostels</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <!-- Our Details -->
+        <div class="footer-right">
+          <div class="our-details">
+            <h4>Our Details</h4>
             <div class="contact-info">
-              <p>Address: Kathmandu, Nepal</p>
-              <p>Phone: +977 123 456 789</p>
-              <p>Email: info@gharkhoji.com</p>
-            </div>
-            <div class="social-icons">
-              <a href="#" target="_blank">
-                <img src="{% static 'img/facebook.png' %}" alt="Facebook" class="social-icon">
-              </a>
-              <a href="#" target="_blank">
-                <img src="{% static 'img/instagram.png' %}" alt="Instagram" class="social-icon">
-              </a>
-              <a href="#" target="_blank">
-                <img src="{% static 'img/twitter.png' %}" alt="Twitter" class="social-icon">
-              </a>
-              <a href="#" target="_blank">
-                <img src="{% static 'img/youtube.png' %}" alt="YouTube" class="social-icon">
-              </a>
+              <p><i class="fas fa-map-marker-alt"></i> Address: Kathmandu, Nepal</p>
+              <p><i class="fas fa-phone-alt"></i> Phone: +977 123 456 789</p>
+              <p><i class="fas fa-envelope"></i> Email: info@gharkhoji.com</p>
             </div>
           </div>
         </div>
-      </footer>
+        <!-- Follow Us -->
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2025 GharKhoji. All rights reserved. | Designed with ❤️|</p>
+      </div>
+    </footer>
     </body>
     </html>   
+

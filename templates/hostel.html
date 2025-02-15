@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostels</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/hostels.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="{% static 'img/logo1.png' %}" alt="GharKhoji Logo">
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li class="{% if request.path == '/home/' %} active {% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                <li class="{% if request.path == '/hostels/' %} active {% endif %}"><a href="{% url 'hostels' %}">Hostels</a></li>
+                <li class="{% if request.path == '/aboutus/' %} active {% endif %}"><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li class="{% if request.path == '/contactus/' %} active {% endif %}"><a href="{% url 'contactus' %}">Contact Us</a></li>
+                <li><a href="#">Register Hostel</a></li>
+                <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="image">
+            <div class="hostel-image-container">
+                <img src="{% static 'aboutimg/hostellistitng.jpg' %}" alt="GharKhoji Banner">
+                <h1>Hostels</h1>
+                <p>View more hostels.</p>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <form method="GET" action="{% url 'hostels' %}">
+            <div class="search-section">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search hostels..." class="search-input" name="title">
+                    </div>
+                    <div class="location-box">
+                        <input type="text" placeholder="Search location..." class="location-input" name="location">
+                    </div>
+                    <div class="hostel-type-box">
+                        <input type="text" placeholder="Boys or Girls Hostel..." class="type-input" name="type">
+                    </div>
+                    <div class="search-btn-box">
+                        <button type="submit" class="search-btn">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+
+        <!-- Filter and Hostels Section -->
+        <div class="hostel-filter-container">
+            <!-- Price Range Filter -->
+            <div class="price-filter">
+                <label for="price-range">Price Range:</label>
+                <input type="range" id="price-range" name="price-range" min="0" max="10000" step="500" value="5000">
+                <span id="price-value">₹5000</span>
+            </div>
+
+            <!-- Hostels Display -->
+            <div class="hostels-display">
+                <div class="outer-card">
+                    {% for hostel in hostels %}
+                        <div class="inner-card">
+                            <div class="image-wrapper">
+                                <img src="{{ hostel.image1.url }}" alt="{{ hostel.title }}">
+                            </div>
+                            <div class="content">
+                                <p>{{ hostel.title }}</p>
+                                <span><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</span>
+                                <span><i class="fa-solid fa-phone"></i> {{ hostel.phone_number }}</span>
+                            </div>
+                            <div class="view-details-container">
+                                <a href="{% url 'hosteldetails' hostel.id %}"><button class="view-details-btn">View Details</button></a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>Sorry, no hostels are available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Update price value on range change
+        document.getElementById('price-range').addEventListener('input', function() {
+            document.getElementById('price-value').textContent = '₹' + this.value;
+        });
+    </script>
+</body>
+</html>

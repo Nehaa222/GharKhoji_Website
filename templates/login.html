@@ -7,27 +7,57 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 </head>
 <body>
-    <form action="#" method="POST">
+    <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="container">
             <div class="form-section">
-                <h1>Welcome to our Page!</h1>
+                <h1>Welcome to GharKhoji!</h1>
                 <p>Find your home away from home.</p>
-                <input type="username" placeholder="Username" id="username" name="username">
-                <input type="password" placeholder="Password" id="password" name="password">
+    
+                <!-- Error Message Display -->
+                {% if messages %}
+                    <div class="error-container">
+                        {% for message in messages %}
+                            <p class="error-message">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+    
+                <!-- Username Field -->
+                <div class="input-group">
+                    <input type="text" placeholder="Username" id="username" name="username">
+                    <span class="error-message" id="username-error"></span>
+                </div>
+    
+                <!-- Password Field -->
+                <div class="input-group">
+                    <input type="password" placeholder="Password" id="password" name="password" class="form-control-password">
+                    <span class="error-message" id="password-error"></span>
+                    <button class="btn btn-outline-secondary" type="button" id="pass-toggle" onclick="togglePassword()">
+                        <i id="password-icon" class="fas fa-eye"></i>
+                    </button>
+                </div> 
+    
                 <a href="#" class="forgot-password">Forgot Password</a>
                 <button type="submit" class="login-button">Login</button>
+                <div class="divider">OR</div>
+    
+                <button type="button" class="btn-google">
+                    <span>Sign up with</span>
+                    <img src="{% static 'img/google.png' %}" alt="Google Logo" class="google-logo">
+                </button>
+    
                 <div class="footer-text">
                     <p>Don't have an Account? <a href="{% url 'signup' %}">Create Account</a></p>
                 </div>
-            </div> 
-        
-            
-            
+            </div>    
         </div>
-</form>
+    </form>
+    
+    <script src="{% static 'js/login.js' %}"></script>
 </body>
 </html>

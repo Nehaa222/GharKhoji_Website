@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/hosteldetails.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="slider">
+        <img src="{{ hostel.image1.url }}" class="active" alt="Hostel Image 1">
+        {% if hostel.image2 %}
+            <img src="{{ hostel.image2.url }}" alt="Hostel Image 2">
+        {% endif %}
+        {% if hostel.image3 %}
+            <img src="{{ hostel.image3.url }}" alt="Hostel Image 3">
+        {% endif %}
+        {% if hostel.image4 %}
+            <img src="{{ hostel.image4.url }}" alt="Hostel Image 4">
+        {% endif %}
+
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <h1>{{ hostel.title }}</h1>
+                <span class="save-icon"><i class="fa-regular fa-heart"></i></span>
+            </div>
+            <p><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</p>
+            <p><i class="fa-solid fa-square-phone"></i> {{ hostel.phone_number }}</p>
+            
+            <h2><i class="fa-solid fa-bolt"></i> Overview</h2>
+            <p>{{ hostel.description }}</p>
+            
+            <h2><i class="fa-solid fa-bell-concierge"></i> Our Facilities</h2>
+            <div class="facility-container">
+                {% for facility in hostel.facilities.splitlines %}
+                    <div class="facility-box"><i class="fa-solid fa-check"></i> {{ facility }}</div>
+                {% endfor %}
+            </div>
+            
+            <h2><i class="fa-solid fa-bed"></i>  Available Beds</h2>
+            <table>
+                <tr>
+                    <th>Room Type</th>
+                    <th>Single</th>
+                    <th>2 Sharing</th>
+                    <th>3 Sharing</th>
+                </tr>
+                <tr>
+                    <td>Per Bed Price</td>
+                    <td>{{ hostel.single_room_price }}</td>
+                    <td>{{ hostel.two_sharing_price }}</td>
+                    <td>{{ hostel.three_sharing_price }}</td>
+                </tr>
+                <tr>
+                    <td>Available Room</td>
+                    <td>{{ hostel.single_room_available }}</td>
+                    <td>{{ hostel.two_sharing_available }}</td>
+                    <td>{{ hostel.three_sharing_available }}</td>
+                </tr>
+            </table>
+            
+            <h2><i class="fa-solid fa-pen"></i> Hostel Rules</h2>
+            <div class="box-container">
+                {% for rule in hostel.rules.splitlines %}
+                    <div class="box">{{ rule }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <div class="sidebar-container">
+            <!-- Image Container Above Sidebar -->
+            <div class="sidebar-image-container">
+                <img src="{% static 'img/Hosteldetails.png' %}" alt="Hostel Image" style="width: 100%; height: auto; object-fit: contain;">
+            </div>
+        
+            <!-- Sidebar Content -->
+            <div class="sidebar">
+                <h3>Hostel Details</h3>
+                <p><i class="fa-solid fa-user"></i> {{ hostel.type }}</p>
+                <p><i class="fa-solid fa-phone"></i> {{ hostel.phone_number }}</p>
+                <p><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</p>
+                <p><i class="fa-solid fa-envelope"></i> {{ hostel.email }}</p>
+                <a href="#" class="book-now">Book Now</a>
+            </div>
+        </div>
+
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.slider img');
+        const totalImages = images.length;
+
+        // Function to change the image(NEXT BUTTON)
+        function changeImage() {
+            images[currentIndex].classList.remove('active'); // Remove 'active' class from the current image
+            currentIndex = (currentIndex + 1) % totalImages; // Move to the next image (looping back if at the last image)
+            images[currentIndex].classList.add('active'); // Add 'active' class to the new image
+        }
+
+        // Function to change the image in reverse(PREVIOUS BUTTON)
+        function prevImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;// Move to the previous image (looping to last image if at first image)
+            images[currentIndex].classList.add('active');
+        }
+
+        // Event listeners for the prev and next buttons
+        document.querySelector('.prev').addEventListener('click', prevImage);
+        document.querySelector('.next').addEventListener('click', changeImage);
+    </script>
+</body>
+</html>

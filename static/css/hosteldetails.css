@@ -1,0 +1,207 @@
+        /*Image Contain*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 100%;
+            max-height: 500px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider img {
+            width: 100%;
+            height: auto;
+            display: none; /* Hide all images */
+            object-fit: cover;
+        }
+
+        .slider img.active {
+            display: block; /* Show only the active image */
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            border-radius: 80%;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+        /*Body Part*/
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            margin: 10px auto;
+            gap: 20px;
+        }
+
+        .content {
+            flex: 2;
+            padding: 10px;
+        }
+
+        .content p{
+            margin-bottom:20px;
+        }
+        .content h2{
+            margin-top: 20px;
+            margin-bottom:20px;
+        }
+        .content i {
+        font-size: 16px; /* Adjust the size as needed */
+        width: 18px; /* Ensures uniform width */
+        text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .facility-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .facility-box{
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: flex;
+            gap: 10px;
+        }
+        .facility-box:hover {
+            color: white;
+            background-color: #445e78;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            
+        }
+
+        table, th, td {
+            border: 1px solid #374c61;
+            
+            
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            text-align: center;
+            
+        }
+
+        th {
+            background: #445e78;
+            color: white;
+            
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top:15px;
+        }
+
+        .box {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .box:hover{
+            color: white;
+            background-color: #445e78;
+        }
+
+        .sidebar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 350px;
+            margin-top: 300px;
+            margin-right: 20px;
+        }
+
+        .sidebar-image-container {
+            width: 100%;
+            height: 365px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #e0e0e1;
+            padding: 10px;
+            margin-bottom: 60px;
+            margin-top: -260px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            height: 300px;
+        }
+        .sidebar h3 {
+        font-size: 22px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        }
+
+        .sidebar p {
+            font-size: 16px;
+            margin: 20px;
+            text-align: left;
+        }
+
+        .sidebar i {
+            margin-right: 8px;
+            color: #000000;
+        }
+
+        .book-now {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            padding: 12px 0;
+            margin: 20px auto 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            background: #F1C40F;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        } 

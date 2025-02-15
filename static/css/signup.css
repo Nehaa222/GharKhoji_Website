@@ -43,17 +43,18 @@ body {
 .form-section h1 {
     margin: 0;
     font-size: 28px; /* Adjust size */
-    color: #4B5945;
+    color: #445e78;
     text-align: center; /* Center the title */
 }
 
 .form-section p {
     margin-top: 8px;
     margin-bottom: 24px;
-    color: #4B5945;
+    color: #445e78;
     font-size: 14px;
     text-align: center; /* Center the paragraph */
 }
+
 
 .form-section input {
     display: block;
@@ -65,16 +66,11 @@ body {
     font-size: 14px;
 }
 
-.form-section input:focus {
-    outline: none; 
-}
-
-
 .form-section .signup-button {
     width: 85%; /* Make the login button smaller */
     padding: 10px;
     margin: 4px;
-    background-color: #4B5945;
+    background-color: #445e78;
     color: white;
     border: none;
     border-radius: 4px;
@@ -83,7 +79,8 @@ body {
 }
 
 .form-section .signup-button:hover {
-    background-color: #91AC8F;
+    background-color: #F1C40F;
+
 }
 
 .form-section .footer-text {
@@ -99,5 +96,28 @@ body {
 
 .form-section .footer-text a:hover {
     text-decoration: underline;
+}
+
+/* Input container for validation */
+.input-container {
+    width: 100%;
+    position: relative;
+    margin-left: 52px;
+
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -5px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Highlight invalid inputs */
+.input-container input.error {
+    border: 1px solid red;
+    background-color: #ffebee;
 }
 
