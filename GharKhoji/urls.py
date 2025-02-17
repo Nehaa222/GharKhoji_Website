@@ -19,7 +19,6 @@ from django.urls import path
 from app import views
 from django.conf import settings
 from django.conf.urls.static import static
-from app.views import check_credentials
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,8 +30,6 @@ urlpatterns = [
     path('contactus/', views.ContactPage, name='contactus'),
     path('hostels/', views.HostelPage, name='hostels'),
     path('hosteldetails/<int:id>/', views.HostelDetails, name='hosteldetails'),
-    path('check-email/', views.check_email, name='check-email'),
-    path('check-credentials/', check_credentials, name='check_credentials'),
 
 ]
 

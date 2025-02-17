@@ -18,25 +18,20 @@
                 <h1>Welcome to GharKhoji!</h1>
                 <p>Find your home away from home.</p>
     
-                <!-- Error Message Display -->
-                {% if messages %}
-                    <div class="error-container">
-                        {% for message in messages %}
-                            <p class="error-message">{{ message }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-    
                 <!-- Username Field -->
                 <div class="input-group">
-                    <input type="text" placeholder="Username" id="username" name="username">
-                    <span class="error-message" id="username-error"></span>
+                    <input type="text" placeholder="Username" id="username" name="username" value="{{ username }}" class="form-control {% if errors.username %}is-invalid{% endif %}">
+                    {% if errors.username %}
+                    <div class="invalid-feedback">{{ errors.username }}</div>
+                    {% endif %}
                 </div>
     
                 <!-- Password Field -->
                 <div class="input-group">
-                    <input type="password" placeholder="Password" id="password" name="password" class="form-control-password">
-                    <span class="error-message" id="password-error"></span>
+                    <input type="password" placeholder="Password" id="password" name="password" class="form-control {% if errors.password %}is-invalid{% endif %}">
+                    {% if errors.password %}
+                    <div class="invalid-feedback">{{ errors.password }}</div>
+                    {% endif %}
                     <button class="btn btn-outline-secondary" type="button" id="pass-toggle" onclick="togglePassword()">
                         <i id="password-icon" class="fas fa-eye"></i>
                     </button>
