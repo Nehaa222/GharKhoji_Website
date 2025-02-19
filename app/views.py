@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import ContactUs, Hostel
@@ -8,6 +9,8 @@ from .models import AboutUs
 import re
 from django.db.models import Q
 from django.contrib.auth import authenticate
+from django.core.mail import send_mail
+from GharKhoji.settings import EMAIL_HOST_USER
 
 # Create your views here.
 #@login_required(login_url='login')
@@ -151,10 +154,55 @@ def HostelPage(request):
     return render(request, 'hostel.html', {'hostels': hostels})
 
 
-
 def HostelDetails(request, id):
     hostel = get_object_or_404(Hostel, id=id)
     return render(request, 'hosteldetails.html', {'hostel': hostel})
 
+#Forgot Password
+def ForgotPassword(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        print("Email: ", email)
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            print("User Exists")
+            send_mail("Reset Your Password", f"Hello User: {user}!\nTo reset password, click on the given link \n http://127.0.0.1:8000/newpassword/{user}", EMAIL_HOST_USER, [email], fail_silently=True)
+            messages.success(request, "Password reset link has been sent to your email.")
+        else:
+            return render(request, 'forgotpassword.html', {"errors": {"email": "Email does not exist"}})
+    return render(request, 'forgotpassword.html')
 
+#New Password
+def NewPasswordPage(request, user):
+    userid = User.objects.get(username=user)
+    errors = {}
+    if request.method== "POST":
+        password = request.POST.get("password")
+        confirmpassword = request.POST.get("confirmpassword")
 
+        # Password validation pattern
+        password_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+
+        # Validate password
+        if not password:
+            errors['password'] = "Password is required."
+        elif not re.match(password_pattern, password):
+            errors['password'] = "Password must be at least 8 characters, contain one uppercase, one lowercase, one number, and one special character." 
+        # Validate confirm password
+        if not confirmpassword:
+            errors['confirmpassword'] = "Confirm password is required."
+        elif password != confirmpassword:
+            errors['confirmpassword'] = "Passwords do not match."
+
+        # If there are errors, re-render the form with errors
+        if errors:
+            return render(request, 'newpassword.html', {'errors': errors})      
+        if password == confirmpassword:
+            userid.set_password(password)
+            userid.save()
+            return redirect('message')
+    return render(request, 'newpassword.html')
+
+#Message 
+def Message(request):
+    return render(request, 'message.html')

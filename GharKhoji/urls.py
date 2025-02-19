@@ -19,6 +19,7 @@ from django.urls import path
 from app import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views #password reset
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,10 @@ urlpatterns = [
     path('contactus/', views.ContactPage, name='contactus'),
     path('hostels/', views.HostelPage, name='hostels'),
     path('hosteldetails/<int:id>/', views.HostelDetails, name='hosteldetails'),
+    
+    path('forgotpassword/', views.ForgotPassword, name='forgotpassword'),
+    path('newpassword/<str:user>/', views.NewPasswordPage, name='newpassword'),
+    path('message/', views.Message, name='message'),
 
 ]
 

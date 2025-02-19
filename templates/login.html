@@ -16,8 +16,7 @@
         <div class="container">
             <div class="form-section">
                 <h1>Welcome to GharKhoji!</h1>
-                <p>Find your home away from home.</p>
-    
+                <p>Find your home away from home.</p>    
                 <!-- Username Field -->
                 <div class="input-group">
                     <input type="text" placeholder="Username" id="username" name="username" value="{{ username }}" class="form-control {% if errors.username %}is-invalid{% endif %}">
@@ -37,7 +36,7 @@
                     </button>
                 </div> 
     
-                <a href="#" class="forgot-password">Forgot Password</a>
+                <a href="{% url 'forgotpassword' %}" class="forgot-password">Forgot Password</a>
                 <button type="submit" class="login-button">Login</button>
                 <div class="divider">OR</div>
     
