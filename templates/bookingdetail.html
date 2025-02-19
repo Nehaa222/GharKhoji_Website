@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    
+    <div class="container">
+        <div class="header">
+          <h2>Hostel Booking</h2>
+          <p>Proceed with the booking.</p>
+        </div>
+
+        <form action="#" method="post">
+         {% csrf_token %}
+          <div class="row">
+            <div class="info">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" placeholder="First Name" required>
+            </div>
+            <div class="info">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" placeholder="Last Name" required>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="info">
+              <label for="mobile-number">Mobile Number</label>
+              <input type="tel" id="mobile-number" placeholder="Enter your mobile number" pattern="[+]?[0-9\s-]{7,15}" required>
+            </div>
+            <div class="info">
+              <label for="contact-number">Contact Number (Optional)</label>
+              <input type="tel" id="contact-number" placeholder="Enter additional number" pattern="[+]?[0-9\s-]{7,15}">
+            </div>
+          </div>
+    
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+    
+            <label for="room-type">Room Type</label>
+            <input type="text" id="room-type" placeholder="Room Type" required>
+    
+            <label for="guests">Number of Tenants</label>
+            <input type="text" id="guests" placeholder="Number of Tenants" required>
+          
+    
+          <div class="row">
+            <div class="info">
+              <label for="arrival-date">Arrival Date</label>
+              <input type="date" id="arrival-date" required>
+            </div>
+            <div class="info">
+                <label for="length-of-stay">Length of Stay</label>
+                <input type="text" id="length-of-stay" placeholder="Length of Stay" required>
+            </div>
+          </div>
+    
+          <label for="special-requests">Special Requests</label>
+          <textarea id="special-requests" rows="4" placeholder="Any special requests..."></textarea>
+    
+          <div class="footer-buttons">
+            <button type="submit" class="submit-btn">Book with Khalti <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </form>
+      </div>
+</body>
+</html>

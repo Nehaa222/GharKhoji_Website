@@ -206,3 +206,7 @@ def NewPasswordPage(request, user):
 #Message 
 def Message(request):
     return render(request, 'message.html')
+
+#Booking 
+def Booking(request):
+    return render(request, 'bookingdetail.html')

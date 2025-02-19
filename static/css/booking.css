@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .header {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgb(1, 1, 1);
+    background: url("/static/booking/booking.jpg");
+    background-size: 90%;
+    background-position: center 20%;
+    border-radius: 10px 10px 0 0;
+    
+  }
+  .header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    padding-top: 66px;
+  }
+  .header p {
+    margin-top: -12px;
+    font-size: 16px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    margin-top: 10px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    outline:none;
+  }
+  input:focus, textarea:focus {
+  border: 1px solid black;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .row div {
+      width: 48%;
+  }
+
+  .info label {
+  display: block;
+  margin-bottom: 6px; /* Adjust as needed */
+  }
+
+  .footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .submit-btn {
+    display: flex;
+    align-items: center;
+    background-color: #445e78;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
+  .submit-btn:hover {
+    background-color: #f4c91d;
+  }
+  .submit-btn i {
+    background-color: white;
+    color: black;
+    margin-left: 10px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }

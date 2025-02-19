@@ -30,6 +30,7 @@ urlpatterns = [
     path('aboutus/', views.AboutPage, name='aboutus'),
     path('contactus/', views.ContactPage, name='contactus'),
     path('hostels/', views.HostelPage, name='hostels'),
+    path('booking/', views.Booking, name='booking'),
     path('hosteldetails/<int:id>/', views.HostelDetails, name='hosteldetails'),
     
     path('forgotpassword/', views.ForgotPassword, name='forgotpassword'),
