@@ -142,7 +142,7 @@ def HostelPage(request):
     name = request.GET.get('title')
     location = request.GET.get('location')
     hostel_type = request.GET.get('type')
-    
+    budget = request.GET.get('budget')
     # Apply filters based on the user inputs
     if name:
         hostels = hostels.filter(Q(title__icontains=name))
@@ -150,7 +150,12 @@ def HostelPage(request):
         hostels = hostels.filter(Q(location__icontains=location))
     if hostel_type:
         hostels = hostels.filter(Q(type__icontains=hostel_type))
-    
+    if budget:
+        try:
+            budget = int(budget)  # Convert budget to integer
+            hostels = hostels.filter(single_room_price__exact=budget)  # Filter by max price
+        except ValueError:
+            pass  # Ignore invalid budget values 
     return render(request, 'hostel.html', {'hostels': hostels})
 
 
@@ -210,3 +215,44 @@ def Message(request):
 #Booking 
 def Booking(request):
     return render(request, 'bookingdetail.html')
+
+
+#User Profile Section
+def my_account(request):
+    user = request.user
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        email = request.POST.get('email', '')
+        username = request.POST.get('username', '')
+
+        # Validate the data
+        if not first_name or not last_name or not email or not username:
+            messages.error(request, "All fields are required.")
+            return redirect('profile')  # Redirect back to the same page
+
+        # Update user model fields
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.username = username
+
+        try:
+            # Save the updated user details to the database
+            user.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {e}')
+
+        return redirect('my_account')  # After saving, redirect to the same page
+
+    return render(request, 'profile.html', {'user': user})
+
+def saved(request):
+    return render(request, 'home.html')
+
+
+def bookings(request):
+    return render(request, 'home.html')
+

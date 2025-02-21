@@ -22,7 +22,24 @@
                 <li class="{% if request.path == '/aboutus/' %} active {% endif %}"><a href="{% url 'aboutus' %}">About Us</a></li>
                 <li class="{% if request.path == '/contactus/' %} active {% endif %}"><a href="{% url 'contactus' %}">Contact Us</a></li>
                 <li><a href="#">Register Hostel</a></li>
-                <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                  <div class="dropdown-toggle">
+                    <div class="rounded-circle">{{ user.first_name|default:user.username|first|upper }}</div>
+                    <span>{{ user.get_full_name|default:user.username }}</span>
+                  </div>
+                  <div class="dropdown-menu">
+                    <a href="{% url 'my_account' %}">My account</a>
+                    <a href="{% url 'saved' %}">Saved</a>
+                    <a href="{% url 'bookings' %}">Booking History</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'logout' %}" class="text-danger">Logout</a>
+                  </div>
+                </li>
+              {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+              {% endif %}
             </ul>
         </nav>
     </header>
@@ -61,9 +78,12 @@
         <div class="hostel-filter-container">
             <!-- Price Range Filter -->
             <div class="price-filter">
-                <label for="price-range">Price Range:</label>
-                <input type="range" id="price-range" name="price-range" min="0" max="10000" step="500" value="5000">
-                <span id="price-value">₹5000</span>
+                <label for="budgetRange">Single Room Budget Filter:</label>
+                <input type="range" class="range" id="budgetRange" min="5000" max="50000" step="1000" value="{{ request.GET.budget|default:25000 }}" 
+                    oninput="updateBudgetValue(this.value)">
+                <p>Selected Budget:Rs <span id="budgetValue">{{ request.GET.budget|default:25000 }}</span></p>
+
+                <button onclick="applyFilter()">Apply Filter</button>
             </div>
 
             <!-- Hostels Display -->
@@ -93,9 +113,36 @@
 
     <script>
         // Update price value on range change
-        document.getElementById('price-range').addEventListener('input', function() {
-            document.getElementById('price-value').textContent = '₹' + this.value;
+        function updateBudgetValue(value) {
+        document.getElementById('budgetValue').textContent = value;
+        }
+        function applyFilter() {
+        let budget = document.getElementById('budgetRange').value;
+        let currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('budget', budget);
+        window.location.href = currentUrl.toString();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+        
+            dropdownToggle.addEventListener('click', function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+            });
+        
+            dropdownMenu.addEventListener('click', function (event) {
+            event.stopPropagation(); // Prevent menu clicks from closing it
+            });
+        
+            document.addEventListener('click', function (event) {
+            if (!dropdownMenu.contains(event.target) && !dropdownToggle.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+            });
         });
+    
     </script>
 </body>
 </html>

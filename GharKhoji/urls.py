@@ -25,8 +25,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.SignupPage, name='signup'),
     path('login/', views.LoginPage, name='login'),
-    path('home/', views.HomePage, name='home'),
     path('logout/', views.LogoutPage, name="logout"),
+    
+    path('home/', views.HomePage, name='home'),
     path('aboutus/', views.AboutPage, name='aboutus'),
     path('contactus/', views.ContactPage, name='contactus'),
     path('hostels/', views.HostelPage, name='hostels'),
@@ -36,6 +37,11 @@ urlpatterns = [
     path('forgotpassword/', views.ForgotPassword, name='forgotpassword'),
     path('newpassword/<str:user>/', views.NewPasswordPage, name='newpassword'),
     path('message/', views.Message, name='message'),
+    
+    path('my-account/', views.my_account, name='my_account'),
+    path('saved/', views.saved, name='saved'),
+    path('bookings/', views.bookings, name='bookings'),
+
 
 ]
 
