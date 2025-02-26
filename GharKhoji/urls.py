@@ -35,7 +35,7 @@ urlpatterns = [
     path('hosteldetails/<int:id>/', views.HostelDetails, name='hosteldetails'),
     
     path('forgotpassword/', views.ForgotPassword, name='forgotpassword'),
-    path('newpassword/<str:user>/', views.NewPasswordPage, name='newpassword'),
+    path('newpassword/<str:username>/', views.NewPasswordPage, name='newpassword'),
     path('message/', views.Message, name='message'),
     
     path('my-account/', views.my_account, name='my_account'),

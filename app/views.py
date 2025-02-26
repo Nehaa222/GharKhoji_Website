@@ -1,5 +1,4 @@
 from django.shortcuts import render,get_object_or_404, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -8,9 +7,11 @@ from .models import ContactUs, Hostel
 from .models import AboutUs
 import re
 from django.db.models import Q
-from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from GharKhoji.settings import EMAIL_HOST_USER
+#user role
+from django.contrib.auth import get_user_model
+User = get_user_model() 
 
 # Create your views here.
 #@login_required(login_url='login')
@@ -28,6 +29,7 @@ def SignupPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         confirmpassword = request.POST.get('confirmpassword')
+        role = request.POST.get('role')
 
         if not firstname:
             errors['firstname'] = "First Name is required."
@@ -56,10 +58,12 @@ def SignupPage(request):
         elif password != confirmpassword:
             errors['confirmpassword'] = "Passwords do not match."
 
+        if not role:
+            errors['role'] = "Role is required."
         if errors:
             return render(request, 'signup.html', {'errors': errors})
 
-        my_user = User.objects.create_user(first_name=firstname, last_name=lastname, email=email, username=username, password=password)
+        my_user = User.objects.create_user(first_name=firstname, last_name=lastname, email=email, username=username, password=password, role=role)
         my_user.save()
         return redirect('login')
 
@@ -178,8 +182,8 @@ def ForgotPassword(request):
     return render(request, 'forgotpassword.html')
 
 #New Password
-def NewPasswordPage(request, user):
-    userid = User.objects.get(username=user)
+def NewPasswordPage(request, username):
+    userid = get_object_or_404(User, username=username)
     errors = {}
     if request.method== "POST":
         password = request.POST.get("password")
@@ -202,10 +206,11 @@ def NewPasswordPage(request, user):
         # If there are errors, re-render the form with errors
         if errors:
             return render(request, 'newpassword.html', {'errors': errors})      
-        if password == confirmpassword:
-            userid.set_password(password)
-            userid.save()
-            return redirect('message')
+        
+        # Set new password and save user
+        userid.set_password(password)
+        userid.save()
+        return redirect('message')
     return render(request, 'newpassword.html')
 
 #Message 

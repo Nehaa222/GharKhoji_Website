@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <form action="#" method="post">
+    <form action="{% url 'signup' %}" method="post">
         {% csrf_token %}
         <div class="container">
             <div class="form-section">
@@ -71,9 +71,12 @@
                 <div class="input-container">
                     <select id="role" name="role" required>
                         <option value="" disabled selected>Select Your Role</option>
-                        <option value="user">User</option>
-                        <option value="hostel_owner">Hostel Owner</option>
+                        <option value="user" {% if request.POST.role == 'user' %}selected{% endif %}>User</option>
+                        <option value="hostel_owner" {% if request.POST.role == 'hostel_owner' %}selected{% endif %}>Hostel Owner</option>
                     </select>
+                    {% if errors.role %}
+                    <div class="invalid-feedback">{{ errors.role }}</div>
+                    {% endif %}
                 </div>    
 
                 <button type="submit" class="signup-button">Sign Up</button>

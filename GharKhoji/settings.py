@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'app',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    
     
 
 ]
@@ -73,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'GharKhoji.wsgi.application'
-
+AUTH_USER_MODEL = 'app.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -156,3 +157,4 @@ EMAIL_HOST_PASSWORD ='nahy owtk begp sszq'
 ##INITIAL_TRY
 #bwuj uaiu xygs jwte
 #nehashrestha122@gmail.com
+
