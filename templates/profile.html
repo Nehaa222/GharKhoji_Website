@@ -6,9 +6,45 @@
     <title>Account Settings</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <script src="{% static 'js/profile.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <a href="#">
+                <img src="{% static 'img/logo1.png' %}" alt="GharKhoji Logo">
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li class="{% if user.is_authenticated and request.path == '/home/' %} active {% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                <li class="{% if user.is_authenticated and request.path == '/hostels/' %} active {% endif %}"><a href="{% url 'hostels' %}">Hostels</a></li>
+                <li class="{% if user.is_authenticated and request.path == '/aboutus/' %} active {% endif %}"><a href="{% url 'aboutus' %}">About Us</a></li>
+                <li class="{% if user.is_authenticated and request.path == '/contactus/' %} active {% endif %}"><a href="{% url 'contactus' %}">Contact Us</a></li>
+                
+
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                  <div class="dropdown-toggle">
+                    <div class="rounded-circle">{{ user.first_name|default:user.username|first|upper }}</div>
+                    <span>{{ user.get_full_name|default:user.username }}</span>
+                  </div>
+                  <div class="dropdown-menu">
+                    <a href="{% url 'my_account' %}">My account</a>
+                    <a href="{% url 'saved' %}">Saved</a>
+                    <a href="{% url 'bookings' %}">Booking History</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'logout' %}" class="text-danger">Logout</a>
+                  </div>
+                </li>
+              {% else %}
+                <li><a href="{% url 'signup' %}" class="btn-signup">Sign Up</a></li>
+                <li><a href="{% url 'login' %}" class="btn-login">Login</a></li>
+              {% endif %}
+            </ul>
+        </nav>
+    </header>
 <div class="settings-container">
     <div class="sidebar">
         <div class="profile">
@@ -72,30 +108,5 @@
 
     </div>
 </div>
-
-<script>
-    // Enable the input field when the pencil icon is clicked
-    function enableField(icon) {
-        const input = icon.previousElementSibling;
-        input.removeAttribute("readonly");
-        input.focus();
-    }
-    
-    // Cancel button: Reset fields to original values
-    function disableAllFields() {
-        document.querySelectorAll(".form-input").forEach(input => {
-            input.setAttribute("readonly", "readonly");
-            input.value = input.defaultValue; // Reset to original value
-        });
-    }
-
-    // Handle form submission: Ensure no readonly inputs before submission
-    document.getElementById("profile-form").addEventListener("submit", function(event) {
-        // Make sure all inputs are not readonly before submitting
-        document.querySelectorAll(".form-input").forEach(input => {
-            input.removeAttribute("readonly");
-        });
-    });
-</script>
 </body>
 </html>

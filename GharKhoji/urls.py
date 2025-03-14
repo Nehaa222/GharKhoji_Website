@@ -23,11 +23,11 @@ from django.contrib.auth import views as auth_views #password reset
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.SignupPage, name='signup'),
+    path('signup/',views.SignupPage, name='signup'),
     path('login/', views.LoginPage, name='login'),
     path('logout/', views.LogoutPage, name="logout"),
     
-    path('home/', views.HomePage, name='home'),
+    path('', views.HomePage, name='home'),
     path('aboutus/', views.AboutPage, name='aboutus'),
     path('contactus/', views.ContactPage, name='contactus'),
     path('hostels/', views.HostelPage, name='hostels'),
@@ -42,7 +42,12 @@ urlpatterns = [
     path('saved/', views.saved, name='saved'),
     path('bookings/', views.bookings, name='bookings'),
 
-
+    path('hostelownerdashboard/', views.Hostelownerdashboard, name='hostelownerdashboard'),
+    path('hostelowneruser/', views.Hostelowneruser, name='hostelowneruser'),
+###### Added
+    path('hosteladd/', views.HostelAdd, name='hosteladd'),
+    path('hostelownerprofile/', views.Hostelownerprofile, name='hostelownerprofile')
 ]
+
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

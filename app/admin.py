@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import ContactUs, Hostel, AboutUs
+from .models import ContactUs, AboutUs
 from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
+
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('first_name', 'last_name', 'email', 'username', 'role', 'is_active')
@@ -13,4 +14,5 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(ContactUs)
 admin.site.register(AboutUs)
-admin.site.register(Hostel)
+
+

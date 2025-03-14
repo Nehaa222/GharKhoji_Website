@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import ContactUs, Hostel
+from .models import ContactUs
+from .models import HostelProperty, HostelImage
 from .models import AboutUs
 import re
 from django.db.models import Q
@@ -16,8 +17,8 @@ User = get_user_model()
 # Create your views here.
 #@login_required(login_url='login')
 def HomePage(request):
-    hostels = Hostel.objects.all()
-    return render(request, 'home.html', {'hostels':hostels})
+    Hostels = HostelProperty.objects.filter(approval_status='approved')  # Only fetch approved properties initially
+    return render(request, 'home.html', {'Hostels':Hostels})
 
 #SIGNUP LOGIC
 def SignupPage(request):
@@ -72,7 +73,12 @@ def SignupPage(request):
 #LOGIN LOGIC
 def LoginPage(request):
     if request.user.is_authenticated:
-        return redirect("home")  # Redirect logged-in users away from the login page
+        print(f"Authenticated user: {request.user.username}")
+        print(f"User role: {request.user.role}")
+        if request.user.role == 'Hostel_owner':
+            return redirect('Hostelownerdashboard')  # Redirect to Hostel owner dashboard
+        else:
+            return redirect('home')
 
     errors = {}
     if request.method == "POST":
@@ -89,7 +95,10 @@ def LoginPage(request):
 
             if user:
                 login(request, user)
-                return redirect("home")
+                if user.role == 'hostel_owner':  # Check if user is a Hostel owner
+                    return redirect('hostelownerdashboard')  # Redirect to Hostel owner dashboard
+                else:
+                    return redirect('home')
             else:
                 # Check if username exists in the database
                 if not User.objects.filter(username=username).exists():
@@ -140,7 +149,7 @@ def ContactPage(request):
 
 
 def HostelPage(request):
-    hostels = Hostel.objects.all()  # Fetch all hostels initially
+    Hostels = HostelProperty.objects.all()  # Fetch all Hostels initially
     
     # Get the search filters from the GET request
     name = request.GET.get('title')
@@ -149,23 +158,23 @@ def HostelPage(request):
     budget = request.GET.get('budget')
     # Apply filters based on the user inputs
     if name:
-        hostels = hostels.filter(Q(title__icontains=name))
+        Hostels = Hostels.filter(Q(title__icontains=name))
     if location:
-        hostels = hostels.filter(Q(location__icontains=location))
+        Hostels = Hostels.filter(Q(location__icontains=location))
     if hostel_type:
-        hostels = hostels.filter(Q(type__icontains=hostel_type))
+        Hostels = Hostels.filter(Q(type__icontains=hostel_type))
     if budget:
         try:
             budget = int(budget)  # Convert budget to integer
-            hostels = hostels.filter(single_room_price__exact=budget)  # Filter by max price
+            Hostels = Hostels.filter(single_room_price__exact=budget)  # Filter by max price
         except ValueError:
             pass  # Ignore invalid budget values 
-    return render(request, 'hostel.html', {'hostels': hostels})
+    return render(request, 'Hostel.html', {'Hostels': Hostels})
 
 
 def HostelDetails(request, id):
-    hostel = get_object_or_404(Hostel, id=id)
-    return render(request, 'hosteldetails.html', {'hostel': hostel})
+    Hostel = get_object_or_404(HostelProperty, id=id)
+    return render(request, 'Hosteldetails.html', {'Hostel': Hostel})
 
 #Forgot Password
 def ForgotPassword(request):
@@ -260,4 +269,13 @@ def saved(request):
 
 def bookings(request):
     return render(request, 'home.html')
+
+def Hostelownerdashboard(request):
+    return render(request, 'hostelownerdashboard.html')
+
+def Hostelowneruser(request):
+    return render(request, 'hostelowneruser.html')
+
+def Hostelownerprofile(request):
+    return render(request, 'hostelprofile.html')
 

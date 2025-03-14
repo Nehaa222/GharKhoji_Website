@@ -140,8 +140,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "GharKhoji",
+    "site_header": "GharKhoji",
+    "site_brand": "GharKhoji Admin",
+    # Add your own branding here
+    "welcome_sign": "Welcome to the GharKhoji Admin Panel",
+    "site_logo": "admin/img/Logo.png",
+    "site_logo_classes": "img-rectangle shadow-none",
+    # Copyright on the footer
+    "copyright": "GharKhoji",
+    "user_avatar": None,
+    #For generating the design
+    "show_ui_builder": True,
+
+
 }
 
 #SMTP Confirmation
