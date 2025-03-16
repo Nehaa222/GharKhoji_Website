@@ -173,8 +173,9 @@ def HostelPage(request):
 
 
 def HostelDetails(request, id):
-    Hostel = get_object_or_404(HostelProperty, id=id)
-    return render(request, 'Hosteldetails.html', {'Hostel': Hostel})
+    hostel = get_object_or_404(HostelProperty, id=id)
+    amenities_list = hostel.amenities.split(", ") if hostel.amenities else []  # Convert amenities to a list
+    return render(request, 'Hosteldetails.html', {'hostel': hostel, 'amenities': amenities_list})
 
 #Forgot Password
 def ForgotPassword(request):
@@ -279,3 +280,69 @@ def Hostelowneruser(request):
 def Hostelownerprofile(request):
     return render(request, 'hostelprofile.html')
 
+def HostelAdd(request):
+    try:
+        if request.method == "POST":
+            # Extract form data
+            title = request.POST.get("HostelName", "")
+            hostel_type = request.POST.get("HostelType", "")
+            description = request.POST.get("HostelDescription", "")
+            phone_number = request.POST.get("phoneNumber", "")
+            email = request.POST.get("email", "")
+            location = request.POST.get("location", "")
+            single_beds = int(request.POST.get("singleBeds", 0))
+            shared_2_beds = int(request.POST.get("shared2Beds", 0))
+            shared_3_beds = int(request.POST.get("shared3Beds", 0))
+            price_single_bed = float(request.POST.get("priceSingleBed", 0))
+            price_shared_2_beds = float(request.POST.get("priceShared2Beds", 0))
+            price_shared_3_beds = float(request.POST.get("priceShared3Beds", 0))
+            availability = request.POST.get("availability", "")
+            rules = request.POST.get("rules", "")
+            license_number = request.POST.get("licenseNumber", "")
+            amenities = request.POST.getlist("amenities")  # Multiple amenities as a list
+            thumbnail = request.FILES.get("thumbnail")  # Single thumbnail image
+            images = request.FILES.getlist("HostelImages")  # Multiple Hostel images
+
+            # Ensure required fields are not empty
+            if not title or not description or not hostel_type or not location:
+                messages.error(request, "Please fill in all required fields.")
+                return redirect('hosteladd')  # Redirect to the same page to show the error message
+
+            # Save the HostelProperty object
+            Hostel_obj = HostelProperty.objects.create(
+                title=title,
+                hostel_type=hostel_type,
+                description=description,
+                phone_number=phone_number,
+                email=email,
+                location=location,
+                single_beds=single_beds,
+                shared_2_beds=shared_2_beds,
+                shared_3_beds=shared_3_beds,
+                price_single_bed=price_single_bed,
+                price_shared_2_beds=price_shared_2_beds,
+                price_shared_3_beds=price_shared_3_beds,
+                availability=availability,
+                rules=rules,
+                license_number=license_number,
+                amenities=", ".join(amenities)  # Store as comma-separated values
+            )
+
+            # Save the thumbnail image if exists
+            if thumbnail:
+                HostelImage.objects.create(hostel=Hostel_obj, image=thumbnail)
+
+            # Save multiple Hostel images if any exist
+            for image in images:
+                HostelImage.objects.create(hostel=Hostel_obj, image=image)
+
+            approved_Hostels = HostelProperty.objects.filter(approval_status="approved")
+
+            print("Data saved successfully")
+            messages.success(request, "Hostel Submitted Successfully!")
+            return redirect("Hostelownerdashboard")  # Redirect to the dashboard or another page
+    except Exception as e:
+        print(f"Error saving data: {e}")
+        messages.error(request, "An error occurred while submitting the hostel.")
+        return redirect("hosteladd")
+    return render(request, 'hosteladd.html')

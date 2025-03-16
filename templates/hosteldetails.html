@@ -9,22 +9,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="slider">
-        <img src="{{ hostel.image1.url }}" class="active" alt="Hostel Image 1">
-        {% if hostel.image2 %}
-            <img src="{{ hostel.image2.url }}" alt="Hostel Image 2">
+    <!-- Image Gallery -->
+    <div class="gallery">
+        {% if hostel.images.all %}
+            <div class="slider">
+                {% for image in hostel.images.all %}
+                    <img src="{{ image.image.url }}" alt="{{ hostel.title }}" class="{% if forloop.first %}active{% endif %}">
+                {% endfor %}
+            </div>
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        {% else %}
+            <img src="path/to/default-image.jpg" alt="Default Image">
         {% endif %}
-        {% if hostel.image3 %}
-            <img src="{{ hostel.image3.url }}" alt="Hostel Image 3">
-        {% endif %}
-        {% if hostel.image4 %}
-            <img src="{{ hostel.image4.url }}" alt="Hostel Image 4">
-        {% endif %}
-
-        <button class="prev">&lt;</button>
-        <button class="next">&gt;</button>
     </div>
-    
     <div class="container">
         <div class="content">
             <div class="header">
@@ -38,12 +36,34 @@
             <p>{{ hostel.description }}</p>
             
             <h2><i class="fa-solid fa-bell-concierge"></i> Our Facilities</h2>
-            <div class="facility-container">
-                {% for facility in hostel.facilities.splitlines %}
-                    <div class="facility-box"><i class="fa-solid fa-check"></i> {{ facility }}</div>
+            <div class="facilities-container">
+                
+                {% for amenity in amenities %}
+                    <div class="facility-box">
+                        <i class="fa-solid 
+                            {% if amenity == 'Lawn' %}fa-leaf
+                            {% elif amenity == 'Drainage' %}fa-water
+                            {% elif amenity == 'Free Wifi' %}fa-wifi
+                            {% elif amenity == 'Garage' %}fa-car
+                            {% elif amenity == 'Parking' %}fa-parking
+                            {% elif amenity == 'Air Condition' %}fa-snowflake
+                            {% elif amenity == 'Balcony' %}fa-building
+                            {% elif amenity == 'Laundry' %}fa-soap
+                            {% elif amenity == 'Fencing' %}fa-shield-alt
+                            {% elif amenity == 'Water Supply' %}fa-tint
+                            {% elif amenity == 'Garden' %}fa-seedling
+                            {% elif amenity == 'CCTV' %}fa-camera
+                            {% elif amenity == 'Smoking Area' %}fas fa-smoking
+                            {% else %}fa-check-circle
+                            {% endif %}"></i> 
+                        {{ amenity }}
+                    </div>
+                {% empty %}
+                    <p>No facilites available.</p>
                 {% endfor %}
-            </div>
-            
+                </div>
+                            
+                        
             <h2><i class="fa-solid fa-bed"></i>  Available Beds</h2>
             <table>
                 <tr>
@@ -54,15 +74,15 @@
                 </tr>
                 <tr>
                     <td>Per Bed Price</td>
-                    <td>{{ hostel.single_room_price }}</td>
-                    <td>{{ hostel.two_sharing_price }}</td>
-                    <td>{{ hostel.three_sharing_price }}</td>
+                    <td>{{ hostel.price_single_bed }}</td>
+                    <td>{{ hostel.price_shared_2_beds }}</td>
+                    <td>{{ hostel.price_shared_3_beds }}</td>
                 </tr>
                 <tr>
                     <td>Available Room</td>
-                    <td>{{ hostel.single_room_available }}</td>
-                    <td>{{ hostel.two_sharing_available }}</td>
-                    <td>{{ hostel.three_sharing_available }}</td>
+                    <td>{{ hostel.single_beds }}</td>
+                    <td>{{ hostel.shared_2_beds }}</td>
+                    <td>{{ hostel.shared_3_beds }}</td>
                 </tr>
             </table>
             
@@ -83,7 +103,7 @@
             <!-- Sidebar Content -->
             <div class="sidebar">
                 <h3>Hostel Details</h3>
-                <p><i class="fa-solid fa-user"></i> {{ hostel.type }}</p>
+                <p><i class="fa-solid fa-user"></i> {{ hostel.hostel_type }}</p>
                 <p><i class="fa-solid fa-phone"></i> {{ hostel.phone_number }}</p>
                 <p><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</p>
                 <p><i class="fa-solid fa-envelope"></i> {{ hostel.email }}</p>
