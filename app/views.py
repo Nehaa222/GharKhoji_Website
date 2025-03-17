@@ -290,6 +290,8 @@ def HostelAdd(request):
             phone_number = request.POST.get("phoneNumber", "")
             email = request.POST.get("email", "")
             location = request.POST.get("location", "")
+            latitude = request.POST.get("latitude", "")
+            longitude = request.POST.get("longitude", "")
             single_beds = int(request.POST.get("singleBeds", 0))
             shared_2_beds = int(request.POST.get("shared2Beds", 0))
             shared_3_beds = int(request.POST.get("shared3Beds", 0))
@@ -298,9 +300,9 @@ def HostelAdd(request):
             price_shared_3_beds = float(request.POST.get("priceShared3Beds", 0))
             availability = request.POST.get("availability", "")
             rules = request.POST.get("rules", "")
-            license_number = request.POST.get("licenseNumber", "")
+            pan_number = request.POST.get("panNumber", "")
             amenities = request.POST.getlist("amenities")  # Multiple amenities as a list
-            thumbnail = request.FILES.get("thumbnail")  # Single thumbnail image
+            registration_certificate = request.FILES.get("registration_certificate")
             images = request.FILES.getlist("HostelImages")  # Multiple Hostel images
 
             # Ensure required fields are not empty
@@ -316,6 +318,8 @@ def HostelAdd(request):
                 phone_number=phone_number,
                 email=email,
                 location=location,
+                latitude=latitude,
+                longitude=longitude,
                 single_beds=single_beds,
                 shared_2_beds=shared_2_beds,
                 shared_3_beds=shared_3_beds,
@@ -324,13 +328,11 @@ def HostelAdd(request):
                 price_shared_3_beds=price_shared_3_beds,
                 availability=availability,
                 rules=rules,
-                license_number=license_number,
+                pan_number=pan_number,
+                registration_certificate=registration_certificate,
                 amenities=", ".join(amenities)  # Store as comma-separated values
             )
 
-            # Save the thumbnail image if exists
-            if thumbnail:
-                HostelImage.objects.create(hostel=Hostel_obj, image=thumbnail)
 
             # Save multiple Hostel images if any exist
             for image in images:

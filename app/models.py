@@ -44,6 +44,7 @@ class AboutUs(models.Model):
     
 
 import random
+from django.core.validators import FileExtensionValidator
 class HostelProperty(models.Model):
     HOSTEL_TYPES = [
         ('Boy', 'Boy'),
@@ -61,6 +62,10 @@ class HostelProperty(models.Model):
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
     location = models.CharField(max_length=255)
+    # Map Location Fields
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
     single_beds = models.PositiveIntegerField()
     shared_2_beds = models.PositiveIntegerField()
     shared_3_beds = models.PositiveIntegerField()
@@ -69,7 +74,7 @@ class HostelProperty(models.Model):
     price_shared_3_beds = models.DecimalField(max_digits=10, decimal_places=2)
     availability = models.CharField(max_length=15, choices=AVAILABILITY_STATUS)
     rules = models.TextField()
-    license_number = models.CharField(max_length=50)
+    pan_number = models.CharField(max_length=50)
     amenities = models.TextField()  # Store as JSON or comma-separated values
     approval_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -80,12 +85,25 @@ class HostelProperty(models.Model):
         if not self.unique_id:
             self.unique_id = str(random.randint(1000, 9999))
         super().save(*args, **kwargs)
-
+    
+    class Meta:
+        verbose_name_plural = "Hostel Details"
     def __str__(self):
         return self.title
+   
 class HostelImage(models.Model):
     hostel = models.ForeignKey(HostelProperty, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='hostel_images/')
     
     def __str__(self):
         return f"Image for {self.hostel.title}"
+
+class RegisterCertificate(models.Model):
+    hostel = models.OneToOneField(HostelProperty, on_delete=models.CASCADE, related_name='certificate')
+    certificate = models.FileField(
+        upload_to='certificates/',
+        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg', 'jpeg', 'png'])]
+    )
+
+    def __str__(self):
+        return f"Register certificate of {self.hostel.title}"

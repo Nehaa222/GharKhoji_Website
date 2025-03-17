@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import ContactUs, AboutUs
 from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
-
+from django.utils.html import format_html
+from .models import HostelProperty, HostelImage, RegisterCertificate
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('first_name', 'last_name', 'email', 'username', 'role', 'is_active')
@@ -11,31 +12,27 @@ class CustomUserAdmin(UserAdmin):
         ('Custom Fields', {'fields': ('role',)}),
     )
 
-admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(ContactUs)
-admin.site.register(AboutUs)
-
-
-from django.utils.html import format_html
-from .models import HostelProperty, HostelImage
 
 class HostelImageInline(admin.TabularInline):
     """Allows adding multiple images inline in the admin panel."""
     model = HostelImage
-    extra = 3  # Show 3 empty slots for adding images
+    extra = 2  # Show 2 empty slots for adding images
+
+class HostelCertificateInline(admin.StackedInline):
+    """Allows adding one registration certificate inline in the admin panel."""
+    model = RegisterCertificate
+    extra = 0  # Do not allow adding more than one certificate
+    max_num = 1  # Ensure only one certificate per hostel
 
 class HostelPropertyAdmin(admin.ModelAdmin):
     list_display = (
-        'unique_id', 'title', 'description', 'get_hostel_type_display', 'location', 'phone_number', 'email',
-        'single_beds', 'shared_2_beds', 'shared_3_beds', 'price_single_bed',
-        'price_shared_2_beds', 'price_shared_3_beds', 'availability',
-        'display_amenities', 'display_images', 'approval_status_symbol', 'approval_status'
+        'unique_id', 'title', 'get_hostel_type_display', 'location', 'approval_status_symbol', 'approval_status'
     )
     list_editable = ('approval_status',)  # Allows editing approval status directly in the list view
     list_filter = ('approval_status', 'hostel_type', 'availability', 'location')
-    search_fields = ('title', 'location', 'unique_id', 'amenities', 'phone_number', 'email', 'get_hostel_type_display')
+    search_fields = ('title', 'location', 'unique_id', 'phone_number', 'email', 'get_hostel_type_display')
     readonly_fields = ('unique_id', 'created_at')
-    inlines = [HostelImageInline]  # Add inline images in admin panel
+    inlines = [HostelImageInline, HostelCertificateInline]  # Add inline images in admin panel
 
     def get_hostel_type_display(self, obj):
         """Display human-readable hostel type."""
@@ -77,4 +74,7 @@ class HostelPropertyAdmin(admin.ModelAdmin):
     display_amenities.short_description = "Amenities"
 
 # Register the HostelProperty model with the customized admin view
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(ContactUs)
+admin.site.register(AboutUs)
 admin.site.register(HostelProperty, HostelPropertyAdmin)
