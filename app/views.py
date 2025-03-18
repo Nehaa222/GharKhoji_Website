@@ -154,7 +154,7 @@ def HostelPage(request):
     # Get the search filters from the GET request
     name = request.GET.get('title')
     location = request.GET.get('location')
-    hostel_type = request.GET.get('type')
+    hostel_type = request.GET.get('hostel_type')
     budget = request.GET.get('budget')
     # Apply filters based on the user inputs
     if name:
@@ -162,7 +162,7 @@ def HostelPage(request):
     if location:
         Hostels = Hostels.filter(Q(location__icontains=location))
     if hostel_type:
-        Hostels = Hostels.filter(Q(type__icontains=hostel_type))
+        Hostels = Hostels.filter(Q(hostel_type__icontains=hostel_type))
     if budget:
         try:
             budget = int(budget)  # Convert budget to integer
@@ -284,7 +284,7 @@ def HostelAdd(request):
     try:
         if request.method == "POST":
             # Extract form data
-            title = request.POST.get("HostelName", "")
+            title = request.POST.get("title", "")
             hostel_type = request.POST.get("HostelType", "")
             description = request.POST.get("HostelDescription", "")
             phone_number = request.POST.get("phoneNumber", "")
