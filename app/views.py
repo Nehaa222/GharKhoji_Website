@@ -7,6 +7,7 @@ from .models import ContactUs
 from .models import HostelProperty, HostelImage
 from .models import AboutUs
 import re
+from django.http import JsonResponse
 from django.db.models import Q
 from django.core.mail import send_mail
 from GharKhoji.settings import EMAIL_HOST_USER
@@ -19,6 +20,11 @@ User = get_user_model()
 def HomePage(request):
     Hostels = HostelProperty.objects.filter(approval_status='approved')  # Only fetch approved properties initially
     return render(request, 'home.html', {'Hostels':Hostels})
+
+# API Endpoint: Returns JSON hostel data for Leaflet map
+def hostel_locations(request):
+    hostels = HostelProperty.objects.filter(approval_status='approved').values("id", "title", "latitude", "longitude")
+    return JsonResponse(list(hostels), safe=False)
 
 #SIGNUP LOGIC
 def SignupPage(request):
@@ -166,7 +172,7 @@ def HostelPage(request):
     if budget:
         try:
             budget = int(budget)  # Convert budget to integer
-            Hostels = Hostels.filter(single_room_price__exact=budget)  # Filter by max price
+            Hostels = Hostels.filter(price_single_bed__exact=budget)  # Filter by max price
         except ValueError:
             pass  # Ignore invalid budget values 
     return render(request, 'Hostel.html', {'Hostels': Hostels})

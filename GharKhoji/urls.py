@@ -23,6 +23,7 @@ from django.contrib.auth import views as auth_views #password reset
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/hostels/', views.hostel_locations, name='hostel_locations'),  # API for map markers
     path('signup/',views.SignupPage, name='signup'),
     path('login/', views.LoginPage, name='login'),
     path('logout/', views.LogoutPage, name="logout"),
