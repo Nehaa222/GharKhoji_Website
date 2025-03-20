@@ -3,6 +3,7 @@
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'css/hostels.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock styles%}
 
 {%block content %}
@@ -40,18 +41,37 @@
         <div class="hostel-filter-container">
             <!-- Price Range Filter -->
             <div class="price-filter">
-                <label for="budgetRange">Single Room Budget Filter:</label>
-                <input type="range" class="range" id="budgetRange" min="5000" max="50000" step="1000" value="{{ request.GET.budget|default:25000 }}" 
-                    oninput="updateBudgetValue(this.value)">
-                <p>Selected Budget:Rs <span id="budgetValue">{{ request.GET.budget|default:25000 }}</span></p>
-
+                <label for="budgetRange" style="font-weight: bold;">Budget Filter:</label>
+                <input type="range" class="range" id="budgetRange" min="5000" max="50000" step="1000" 
+                    value="{{ request.GET.budget|default:25000 }}" oninput="updateBudgetValue(this.value)">
+                <p>Selected Budget:Rs<span id="budgetValue">{{ request.GET.budget|default:25000 }}</span></p>
+            
+                <!-- Hostel Type Filter -->
+                <label style="font-weight: bold; margin-top: 15px;">Hostel Type:</label>
+                
+                <div>
+                    <input type="checkbox" id="priceSingleBed" name="hostelType" value="single" 
+                        {% if 'single' in request.GET.bed_types %}checked{% endif %}>
+                    <label for="priceSingleBed">Single Bed Hostel</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="priceShared2Beds" name="hostelType" value="double" 
+                        {% if 'double' in request.GET.bed_types %}checked{% endif %}>
+                    <label for="priceShared2Beds">Double Bed Hostel</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="priceShared3Beds" name="hostelType" value="triple" 
+                        {% if 'triple' in request.GET.bed_types %}checked{% endif %}>
+                    <label for="priceShared3Beds">Triple Bed Hostel</label>
+                </div>
+            
                 <button onclick="applyFilter()">Apply Filter</button>
             </div>
 
             <!-- Hostels Display -->
             <div class="hostels-display">
                 <div class="outer-card">
-                    {% for hostel in Hostels %}
+                    {% for hostel in hostels %}
                         <div class="inner-card">
                             <div class="image-wrapper">
                                 {% if hostel.images.all %}

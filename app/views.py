@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import ContactUs
-from .models import HostelProperty, HostelImage
+from .models import HostelProperty, HostelImage, RegisterCertificate
 from .models import AboutUs
 import re
 from django.http import JsonResponse
@@ -23,8 +23,8 @@ def HomePage(request):
 
 # API Endpoint: Returns JSON hostel data for Leaflet map
 def hostel_locations(request):
-    hostels = HostelProperty.objects.filter(approval_status='approved').values("id", "title", "latitude", "longitude")
-    return JsonResponse(list(hostels), safe=False)
+    Hostels = HostelProperty.objects.filter(approval_status='approved').values("id", "title", "latitude", "longitude")
+    return JsonResponse(list(Hostels), safe=False)
 
 #SIGNUP LOGIC
 def SignupPage(request):
@@ -155,27 +155,58 @@ def ContactPage(request):
 
 
 def HostelPage(request):
-    Hostels = HostelProperty.objects.all()  # Fetch all Hostels initially
+    # Initialize the hostels variable to an empty queryset to avoid any UnboundLocalError
+    hostels = HostelProperty.objects.filter(approval_status='approved')  # Fetch all hostels initially
     
-    # Get the search filters from the GET request
+    hostels = HostelProperty.objects.filter(approval_status='approved')  # Fetch all approved hostels
+    
+    # Get search filters from GET request
     name = request.GET.get('title')
     location = request.GET.get('location')
     hostel_type = request.GET.get('hostel_type')
     budget = request.GET.get('budget')
-    # Apply filters based on the user inputs
+    bed_types = request.GET.get('bed_types', '').split(',')
+
+    # Apply filters based on user input
     if name:
-        Hostels = Hostels.filter(Q(title__icontains=name))
+        hostels = hostels.filter(Q(title__icontains=name))
     if location:
-        Hostels = Hostels.filter(Q(location__icontains=location))
+        hostels = hostels.filter(Q(location__icontains=location))
     if hostel_type:
-        Hostels = Hostels.filter(Q(hostel_type__icontains=hostel_type))
+        hostels = hostels.filter(Q(hostel_type__icontains=hostel_type))
+
+    # **If no bed type is selected, default to filtering by 'single' beds**
+    if not any(bed_types) or bed_types == ['']:
+        bed_types = ['single']
+
+    # Apply bed type filter
+    bed_filter = Q()
+    if 'single' in bed_types:
+        bed_filter |= Q(single_beds__gt=0)  
+    if 'double' in bed_types:
+        bed_filter |= Q(shared_2_beds__gt=0)  
+    if 'triple' in bed_types:
+        bed_filter |= Q(shared_3_beds__gt=0)  
+        
+    hostels = hostels.filter(bed_filter)
+
+    # Apply budget filter based on selected bed types
     if budget:
         try:
-            budget = int(budget)  # Convert budget to integer
-            Hostels = Hostels.filter(price_single_bed__exact=budget)  # Filter by max price
+            budget = int(budget)
+            budget_filter = Q()
+            if 'single' in bed_types:
+                budget_filter |= Q(price_single_bed__exact=budget)
+            if 'double' in bed_types:
+                budget_filter |= Q(price_shared_2_beds__exact=budget)
+            if 'triple' in bed_types:
+                budget_filter |= Q(price_shared_3_beds__exact=budget)
+
+            hostels = hostels.filter(budget_filter)
         except ValueError:
-            pass  # Ignore invalid budget values 
-    return render(request, 'Hostel.html', {'Hostels': Hostels})
+            pass  # Ignore invalid budget values
+
+    return render(request, 'hostel.html', {'hostels': hostels})
 
 
 def HostelDetails(request, id):
@@ -288,16 +319,15 @@ def Hostelownerprofile(request):
 
 def HostelAdd(request):
     try:
-        if request.method == "POST":
-            # Extract form data
-            title = request.POST.get("title", "")
+        if request.method == "POST":  
+            title = request.POST.get("HostelName", "")
             hostel_type = request.POST.get("HostelType", "")
             description = request.POST.get("HostelDescription", "")
             phone_number = request.POST.get("phoneNumber", "")
             email = request.POST.get("email", "")
             location = request.POST.get("location", "")
-            latitude = request.POST.get("latitude", "")
-            longitude = request.POST.get("longitude", "")
+            latitude = float(request.POST.get("latitude", 0))
+            longitude = float(request.POST.get("longitude", 0))
             single_beds = int(request.POST.get("singleBeds", 0))
             shared_2_beds = int(request.POST.get("shared2Beds", 0))
             shared_3_beds = int(request.POST.get("shared3Beds", 0))
@@ -335,10 +365,15 @@ def HostelAdd(request):
                 availability=availability,
                 rules=rules,
                 pan_number=pan_number,
-                registration_certificate=registration_certificate,
                 amenities=", ".join(amenities)  # Store as comma-separated values
             )
 
+            # Save the registration certificate separately
+            if registration_certificate:
+                RegisterCertificate.objects.create(
+                    hostel=Hostel_obj,  # Link to the created hostel
+                    certificate=registration_certificate
+                )
 
             # Save multiple Hostel images if any exist
             for image in images:
@@ -348,9 +383,10 @@ def HostelAdd(request):
 
             print("Data saved successfully")
             messages.success(request, "Hostel Submitted Successfully!")
-            return redirect("Hostelownerdashboard")  # Redirect to the dashboard or another page
+            return redirect("hostelownerdashboard")  # Redirect to the dashboard or another page
     except Exception as e:
         print(f"Error saving data: {e}")
         messages.error(request, "An error occurred while submitting the hostel.")
+        #print(traceback.format_exc())  # This prints the full error traceback
         return redirect("hosteladd")
     return render(request, 'hosteladd.html')

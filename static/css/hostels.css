@@ -128,7 +128,7 @@
 }
 
 .price-filter p {
-  margin: 3px 0;
+  margin: 3px 3px;
   font-weight: 14px;
 }
 
@@ -145,6 +145,25 @@
 
 .price-filter button:hover {
   background-color: #F1C40F;
+}
+
+/* Ensure checkboxes and labels are aligned in one row */
+.price-filter div {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    margin-bottom: 5px;
+}
+
+.price-filter input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.price-filter label {
+    font-weight: normal;
+    cursor: pointer;
 }
 
 /* Hostels Display Styling */
