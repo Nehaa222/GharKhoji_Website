@@ -121,7 +121,7 @@ def LoginPage(request):
 #LOGOUT LOGIC
 def LogoutPage(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 #ABOUTUS PAGE LOGIC
 def AboutPage(request):

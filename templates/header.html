@@ -12,7 +12,7 @@
                 <li class="{% if user.is_authenticated and request.path == '/aboutus/' %} active {% endif %}"><a href="{% url 'aboutus' %}">About Us</a></li>
                 <li class="{% if user.is_authenticated and request.path == '/contactus/' %} active {% endif %}"><a href="{% url 'contactus' %}">Contact Us</a></li>
                 
-
+                <!-- Show Profile When Logged In, Show Sign Up/Login When Logged Out -->
                 {% if user.is_authenticated %}
                 <li class="dropdown">
                   <div class="dropdown-toggle">
