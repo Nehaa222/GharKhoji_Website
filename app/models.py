@@ -20,8 +20,11 @@ class CustomUser(AbstractUser):
 class ContactUs(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
+    email = models.EmailField()
     subject = models.CharField(max_length=255)
     message = models.TextField()
+    reply = models.TextField(blank=True, null=True) 
+    replied = models.BooleanField(default=False) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

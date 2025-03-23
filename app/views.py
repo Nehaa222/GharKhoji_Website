@@ -14,6 +14,9 @@ from GharKhoji.settings import EMAIL_HOST_USER
 #user role
 from django.contrib.auth import get_user_model
 User = get_user_model() 
+#email validation
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 # Create your views here.
 #@login_required(login_url='login')
@@ -113,7 +116,6 @@ def LoginPage(request):
                     errors["password"] = "Incorrect password."
 
         return render(request, "login.html", {"errors": errors, "username": username})
-
     return render(request, "login.html", {"errors": {}})
 
 #LOGOUT LOGIC
@@ -128,37 +130,54 @@ def AboutPage(request):
 
 #CONTACTPAGE LOGIC
 def ContactPage(request):
+    errors = {}
+    is_not_logged_in = not request.user.is_authenticated  # Check if the user is logged in
     if request.method == 'POST':
+        if is_not_logged_in:
+            return render(request, 'contactus.html', {
+                "is_not_logged_in": True, 
+                "errors": errors
+            })  
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         subject = request.POST.get('subject')
         message = request.POST.get('message')
+        email = request.POST.get('email')
 
         # Basic validation
-        if not name or not phone or not subject or not message:
-            messages.error(request, "All fields are required!")
-            return redirect('contactus')
+        if not name:
+            errors["name"] = "Name is required."
+        if not phone:
+            errors["phone"] = "Phone number is required"
+        elif not re.match(r'^\d{10}$', phone):
+            errors["phone"] = "Number must contain exactly 10 digits."
+        if not subject:
+            errors["subject"] = "Subject is required."
+        if not message:
+            errors["message"] = "Message is required."
+        if not email:
+            errors['email'] = "Email is required."
+        else:
+            try:
+                validate_email(email) 
+            except ValidationError:
+                errors["email"] = "Enter a valid email address."
+        if errors:
+            return render(request, 'contactus.html', {"errors": errors, "name": name, "phone": phone, "subject": subject, "message": message, "email": email, "is_not_logged_in": is_not_logged_in,})
         
-        # Phone number validation (must contain exactly 10 digits)
-        if not re.match(r'^\d{10}$', phone):
-            messages.error(request, "Number must contain exactly 10 digits!")
-            return redirect('contactus')
         
         # Save inquiry to the database
-        contactus = ContactUs(name=name, phone=phone, subject=subject, message=message)
+        contactus = ContactUs(name=name, phone=phone, subject=subject, message=message,email=email)
         contactus.save()
         messages.success(request, "Inquirey Sent Successfully")
         return redirect('contactus')
     
-    return render(request, 'contactus.html')
-
+    return render(request, 'contactus.html', {"errors": {}, "is_not_logged_in": is_not_logged_in})
 
 
 def HostelPage(request):
     # Initialize the hostels variable to an empty queryset to avoid any UnboundLocalError
     hostels = HostelProperty.objects.filter(approval_status='approved')  # Fetch all hostels initially
-    
-    hostels = HostelProperty.objects.filter(approval_status='approved')  # Fetch all approved hostels
     
     # Get search filters from GET request
     name = request.GET.get('title')

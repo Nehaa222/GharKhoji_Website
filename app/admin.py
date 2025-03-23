@@ -1,10 +1,13 @@
 from django.contrib import admin
-from .models import ContactUs, AboutUs
+from .models import AboutUs
+from django.core.mail import send_mail
+from .models import ContactUs
 from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 from .models import HostelProperty, HostelImage, RegisterCertificate
 
+###User Role
 class CustomUserAdmin(UserAdmin):
     list_display = ('first_name', 'last_name', 'email', 'username', 'role', 'is_active')
     search_fields = ('first_name', 'last_name', 'email', 'username')
@@ -12,7 +15,24 @@ class CustomUserAdmin(UserAdmin):
         ('Custom Fields', {'fields': ('role',)}),
     )
 
+###ContactUs
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'subject', 'replied')
+    readonly_fields = ('name', 'email', 'phone', 'subject', 'message', 'created_at')
+    fields = ('name', 'email', 'phone', 'subject', 'message', 'reply', 'created_at', 'replied')
+    def save_model(self, request, obj, form, change):
+        if 'reply' in form.changed_data:  # Check if reply was updated
+            send_mail(
+                subject=f"Reply to: {obj.subject}",
+                message=obj.reply,
+                from_email='gharkhoji9@gmail.com',  
+                recipient_list=[obj.email],
+                fail_silently=False,
+            ) 
+            obj.replied = True  # Mark as replied
+        super().save_model(request, obj, form, change)
 
+###Hostel Property Store
 class HostelImageInline(admin.TabularInline):
     """Allows adding multiple images inline in the admin panel."""
     model = HostelImage
@@ -75,6 +95,6 @@ class HostelPropertyAdmin(admin.ModelAdmin):
 
 # Register the HostelProperty model with the customized admin view
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(ContactUs)
+admin.site.register(ContactUs, ContactUsAdmin)
 admin.site.register(AboutUs)
 admin.site.register(HostelProperty, HostelPropertyAdmin)
