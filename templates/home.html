@@ -27,7 +27,10 @@
                 <h2>Featured Hostels</h2>
                 <h4>View More</h4>
             </div>
+          <div class="hostel-container">
+            <button class="prev-btn">&#10094;</button>
             <div class="outer-card">
+  
                 {% for hostel in Hostels %}
                   <div class="inner-card">
                     <div class="image-wrapper">
@@ -50,7 +53,10 @@
                 {% empty %}
                   <p>No hostels available at the moment.</p>
                 {% endfor %}
-              </div>
+            </div>
+            <button class="next-btn">&#10095;</button>
+          </div>
+              
               
               
         </section>
@@ -108,7 +114,25 @@
           })
           .catch(error => console.error("Error fetching hostel data:", error));
   });
+//Previous and Next button
+  document.addEventListener("DOMContentLoaded", function () {
+      const scrollContainer = document.querySelector(".outer-card");
+      const prevBtn = document.querySelector(".prev-btn");
+      const nextBtn = document.querySelector(".next-btn");
 
+      let hostelWidth = scrollContainer.firstElementChild.offsetWidth; // Get one hostel width
+      let visibleHostels = 4; // Number of hostels visible at a time
+      let scrollAmount = (hostelWidth + 30) * visibleHostels; // (Width + gap) * 4 hostels
+
+      nextBtn.addEventListener("click", () => {
+          scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      });
+
+      prevBtn.addEventListener("click", () => {
+          scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      });
+  });
+  
     </script>
     {% endblock %}
  

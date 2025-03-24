@@ -58,23 +58,37 @@
     margin: 22px;
 }
 
+/*Hostel*/
+.hostel-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* Outer card container */
 .outer-card {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-    gap: 30px;
-    width: 100%;
-  
+  display: flex;
+  gap: 30px;
+  width: calc((320px + 30px) * 4); 
+  overflow: hidden;
+  scroll-behavior: smooth;
+  padding: 20px;
+  flex-wrap: nowrap; 
 }
 
 .inner-card {
-    background-color: #445e78; /* Orange color for the container */
-    border-radius: 5px;
-    width: 90%; /* Reduced width to make box smaller */
-    margin: 0 auto; /* Center align within grid */
-    overflow: hidden;
+  background-color: #445e78;
+  border-radius: 5px;
+  width: 320px; 
+  height: 320px; 
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
 }
-
 
 /* Image container */
 .image-wrapper {
@@ -131,6 +145,27 @@
   transition: 0.3s ease-in-out;
 }
 
+.prev-btn, .next-btn {
+  background-color: #F1C40F;
+  color: white;
+  font-size: 18px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); 
+  z-index: 10;
+}
+
+.prev-btn {
+  left: 5px;
+}
+
+.next-btn {
+  right: 5px;
+}
 
  /*explore*/
  .explore-section {
