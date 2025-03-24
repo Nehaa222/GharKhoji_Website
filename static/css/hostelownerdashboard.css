@@ -1,76 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-}
-
-.sidebar {
-    width: 250px;
-    background-color: #34495e;
-    height: 100vh;
-    color: white;
-    position: fixed;
-}
-
-.sidebar .logo {
-    text-align: center;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    padding: 15px;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding:2px;
-   margin:2px;
-}
-
-.sidebar ul li a:hover {
-   background-color: #F1C40F;
-
-}
-/* Custom Style for Log Out */
-.sidebar ul li.logout {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-}
-
-.sidebar ul li.logout a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f40808;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.sidebar ul li.logout i {
-    font-size: 20px;
-    margin-right: 10px;
-}
-    .main-content {
+  .main-content {
         padding: 13px;
-        margin-left: 75px; 
+        margin-left: 225px; 
         min-height: 100vh;
         width: 85%;
         display: flex;
@@ -166,3 +96,4 @@ body {
     td {
         font-size: 16px;
     }
+    

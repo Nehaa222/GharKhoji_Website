@@ -1,29 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hostel Owner User</title>
-    {% load static %}
+{% extends "hostelbase.html" %}
+{% load static %}
+
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/hostelowneruser.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="{% static 'img/logo1.png' %}" alt="Logo" style="width: 200px; margin-right:10px;">
-        </div>
-        <ul>
-            <li><a href="{% url 'hostelownerdashboard' %}"><i class="fas fa-info-circle"></i> Dashboard</a></li>
-            <li><a href="#booking-payment"><i class="fas fa-credit-card"></i> Booking & Payment</a></li>
-            <li><a href="{% url 'hosteladd' %}"><i class="fas fa-plus-circle"></i> Add Hostel</a></li>
-            <li><a href="#user-details"><i class="fas fa-users"></i> User Details</a></li>
-            <li><a href="#approving-details"><i class="fas fa-user-circle"></i> Profile</a></li>
-            <li><a href="#"><i class="fas fa-home"></i> My Hostel</a></li>
-            <li class="logout"><a href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
-        </ul>
-    </div>
-
+{% endblock styles %}
+{% block content %}
     <div class="main-content">
         <div class="container">
             <h2>User Details</h2>
@@ -65,5 +47,4 @@
             </table>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

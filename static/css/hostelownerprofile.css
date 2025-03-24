@@ -1,0 +1,125 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 140%;
+    margin-left: 50%;
+}
+/* General Content Styling */
+.content {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 140%;
+    margin-left: 270px; 
+    margin-top: 20px;
+}
+
+
+/* Account Settings Title */
+h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    margin-left: 0;
+}
+
+/* Profile Icon (Circular Initial) */
+.profile {
+    width: 80px;
+    height: 80px;
+    background-color: #3498db; /* Blue background */
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    margin-left: 38%;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    background-color: white;
+    cursor: text;
+}
+
+/* Edit Icon */
+.edit-icon {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    color: #666;
+}
+
+.edit-icon:hover {
+    color: #007bff;
+}
+
+/* Button Styling */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.update-btn, .cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.update-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.update-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}

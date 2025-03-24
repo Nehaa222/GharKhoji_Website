@@ -1,0 +1,212 @@
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-left: calc(250px + 100px); /* Add this line to shift the container to the right of the navbar */
+    width: calc(100% - 270px); /* Ensure the container width adjusts based on the sidebar */
+    flex-grow: 1; /* Ensures it fills the remaining space */
+}
+
+h1 {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 30px;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #106E94;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+
+button i {
+    margin-right: 8px;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+}
+
+.checkbox-group label {
+    display: inline-block;
+    margin: 0;
+}
+
+.inline-fields {
+    display: flex;
+    gap: 20px;
+}
+
+.inline-fields input {
+    width: 90%;
+}
+
+.amenities-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.amenities-group button {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f8f8f8;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+}
+
+.amenities-group button:hover {
+    background-color: #F1C40F;
+}
+
+button {
+    margin-top: 30px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 30px;
+    background-color: #F1C40F;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-area {
+    border: 2px dashed #106E94;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fafafa;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.upload-area:hover {
+    background-color: #e3f2fd;
+}
+
+.upload-area i {
+    font-size: 40px;
+    color: #106E94;
+}
+
+.upload-area p {
+    margin-top: 10px;
+    color: #000000;
+}
+
+#imagePreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-item {
+    position: relative;
+    display: inline-block;
+}
+
+.image-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.remove-btn {
+    position: absolute;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+input::placeholder {
+    color: grey;
+    font-size: small;
+}
+
+.required::after {
+    content: " *";
+    color: red;
+}
+
+/* Success message styling */
+.alert-success {
+    position: absolute; /* Absolute positioning to overlay it */
+    top: -50px; /* Adjust this value to place the message where you want */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 5px;
+    width: 90%;
+    text-align: center;
+    z-index: 10;
+}
+#map {
+        height: 300px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+}
+.inline-fields input {
+    width: 90%;
+    margin-top: 2%;
+}
