@@ -35,9 +35,12 @@ urlpatterns = [
     path('booking/', views.Booking, name='booking'),
     path('hosteldetails/<int:id>/', views.HostelDetails, name='hosteldetails'),
     
+    path('otp/', views.OTP, name='otp'),
     path('forgotpassword/', views.ForgotPassword, name='forgotpassword'),
     path('newpassword/<str:username>/', views.NewPasswordPage, name='newpassword'),
     path('message/', views.Message, name='message'),
+    path('otp_message/', views.OTPMessage, name='otp_message'),
+    path('resend_otp/', views.ResendOTP, name='resend_otp'),
     
     path('my-account/', views.my_account, name='my_account'),
     path('saved/', views.saved, name='saved'),

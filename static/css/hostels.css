@@ -109,9 +109,9 @@
 .price-filter {
     flex: 0 0 15%; 
     background-color: #f1f1f1; /* Light background */
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
-    max-height: 305px;
+    max-height: 310px;
 }
 
 .price-filter h2 {

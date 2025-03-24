@@ -64,7 +64,23 @@
         width: 18px; /* Ensures uniform width */
         text-align: center;
         }
-
+        
+        .save-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px; 
+            height: 35px;
+            background-color: rgb(199, 199, 199);
+            border-radius: 50%;
+            cursor: pointer; 
+            position: relative; 
+        }
+        
+        .save-icon i {
+            font-size: 18px;
+            color: rgb(0, 0, 0); /* Change to your desired heart color */
+        }
         .header {
             display: flex;
             align-items: center;

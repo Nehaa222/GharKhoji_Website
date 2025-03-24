@@ -161,7 +161,11 @@ select:valid {
     background-color: rgb(255, 230, 230);
     border: 2px solid rgb(170, 13, 13);
 }
-
+/*Error message*/
+.form-section select.is-invalid {
+    background-color: rgb(255, 230, 230);
+    border: 2px solid rgb(170, 13, 13);
+}
 .invalid-feedback {
     color: rgb(184, 58, 11);
     font-size: 14px;

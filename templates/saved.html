@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/saved.css' %}">
+{% endblock styles%}
+
+{%block content %}
+<main>
+    <section class="image">
+        <div class="hostel-image-container">
+            <img src="{% static 'img/saved.jpg' %}" alt="GharKhoji Banner">
+            <h1>Saved</h1>
+            <p>Get quick access.</p>
+        </div>
+    </section>
+    <div class="outer-card">
+  
+        {% for hostel in Hostels %}
+          <div class="inner-card">
+            <div class="image-wrapper">
+              {% if hostel.images.all %}
+              <img src="{{ hostel.images.first.image.url }}" alt="{{ hostel.title }}">
+          {% else %}
+              <img src="{% static 'img/image.jpg' %}" alt="Default Image">
+          {% endif %}
+
+            </div>
+            <div class="content">
+              <p>{{ hostel.title }}</p>
+              <span><i class="fa-solid fa-location-dot"></i> {{ hostel.location }}</span>
+              <span><i class="fa-solid fa-phone"></i> {{ hostel.phone_number }}</span>
+            </div>
+            <div class="view-details-container">
+              <a href="{% url 'hosteldetails' hostel.id %}"><button class="view-details-btn">View Details</button></a>
+            </div>
+          </div>
+        {% empty %}
+          <p>No hostels available at the moment.</p>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

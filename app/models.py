@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import validate_email
 from django.contrib.auth.models import AbstractUser
 
 
@@ -20,7 +21,7 @@ class CustomUser(AbstractUser):
 class ContactUs(models.Model):
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
-    email = models.EmailField()
+    email = models.EmailField(validators=[validate_email])
     subject = models.CharField(max_length=255)
     message = models.TextField()
     reply = models.TextField(blank=True, null=True) 

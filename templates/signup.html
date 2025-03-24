@@ -69,7 +69,7 @@
                 </div>
                 
                 <div class="input-container">
-                    <select id="role" name="role" required>
+                    <select id="role" name="role" class="form-control {% if errors.role %}is-invalid{% endif %}">
                         <option value="" disabled selected>Select Your Role</option>
                         <option value="user" {% if request.POST.role == 'user' %}selected{% endif %}>User</option>
                         <option value="hostel_owner" {% if request.POST.role == 'hostel_owner' %}selected{% endif %}>Hostel Owner</option>

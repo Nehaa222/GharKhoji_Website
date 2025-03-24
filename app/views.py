@@ -1,12 +1,13 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import ContactUs
 from .models import HostelProperty, HostelImage, RegisterCertificate
 from .models import AboutUs
 import re
+import random
+from django.core.cache import cache  # To store OTP temporarily
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core.mail import send_mail
@@ -56,6 +57,8 @@ def SignupPage(request):
             errors['username'] = "Username is required."
         elif len(username) < 4:
             errors['username'] = "Username must be at least 4 characters long."
+        elif User.objects.filter(username=username).exists():  
+            errors['username'] = "Username already exists. Please choose a different one."
 
         password_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
         if not password:
@@ -73,9 +76,29 @@ def SignupPage(request):
         if errors:
             return render(request, 'signup.html', {'errors': errors})
 
-        my_user = User.objects.create_user(first_name=firstname, last_name=lastname, email=email, username=username, password=password, role=role)
-        my_user.save()
-        return redirect('login')
+        # Generate and send OTP
+        otp = random.randint(100000, 999999)
+        # Store OTP in cache for 5 minutes
+        cache.set(f"otp_{email}", otp, timeout=60)
+
+        send_mail(
+            "Your OTP for Signup Verification",
+            f"Hello {firstname},\nYour OTP for signup verification is: {otp}.\nThis OTP is valid for 30 seconds.",
+            EMAIL_HOST_USER,
+            [email],
+            fail_silently=False
+        )
+
+        # Store user details in session temporarily
+        request.session['signup_data'] = {
+            'firstname': firstname,
+            'lastname': lastname,
+            'email': email,
+            'username': username,
+            'password': password,
+            'role': role
+        }
+        return redirect('otp')
 
     return render(request, 'signup.html', {'errors': {}})
 
@@ -215,11 +238,11 @@ def HostelPage(request):
             budget = int(budget)
             budget_filter = Q()
             if 'single' in bed_types:
-                budget_filter |= Q(price_single_bed__exact=budget)
+                budget_filter |= Q(price_single_bed__lte=budget)
             if 'double' in bed_types:
-                budget_filter |= Q(price_shared_2_beds__exact=budget)
+                budget_filter |= Q(price_shared_2_beds__lte=budget)
             if 'triple' in bed_types:
-                budget_filter |= Q(price_shared_3_beds__exact=budget)
+                budget_filter |= Q(price_shared_3_beds__lte=budget)
 
             hostels = hostels.filter(budget_filter)
         except ValueError:
@@ -232,6 +255,58 @@ def HostelDetails(request, id):
     hostel = get_object_or_404(HostelProperty, id=id)
     amenities_list = hostel.amenities.split(", ") if hostel.amenities else []  # Convert amenities to a list
     return render(request, 'Hosteldetails.html', {'hostel': hostel, 'amenities': amenities_list})
+
+#OTP Generate
+def OTP(request):
+    errors = {}
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        email = request.session.get('signup_data', {}).get('email')
+        stored_otp = cache.get(f"otp_{email}")
+
+        if not entered_otp:
+            errors['otp'] = "OTP is required."
+        elif str(entered_otp) != str(stored_otp):
+            errors['otp'] = "The OTP does not match. Please try again."
+        if errors:
+            return render(request, 'otp.html', {'errors': errors})
+        # OTP is valid, create user
+        signup_data = request.session.pop('signup_data', {})
+
+        user = User.objects.create_user(
+            first_name=signup_data['firstname'],
+            last_name=signup_data['lastname'],
+            email=signup_data['email'],
+            username=signup_data['username'],
+            password=signup_data['password'],
+            role = signup_data['role']
+        )
+        return redirect('otp_message')
+
+    return render(request, 'otp.html', {'errors': {}})
+
+#ResendOTP
+def ResendOTP(request):
+    email = request.session.get('signup_data', {}).get('email')
+    
+    if not email:
+        messages.error(request, "Unable to resend OTP. Please try again.")
+        return redirect('otp')
+
+    # Generate a new OTP
+    new_otp = random.randint(100000, 999999)
+
+    # Store OTP in cache (valid for 5 minutes)
+    cache.set(f"otp_{email}", new_otp, timeout=60)
+
+    send_mail(
+        "Your New OTP Code",
+        f"Your new OTP code is: {new_otp}",
+        EMAIL_HOST_USER,
+        [email],
+        fail_silently=False
+        )
+    return redirect('otp_message')
 
 #Forgot Password
 def ForgotPassword(request):
@@ -249,7 +324,7 @@ def ForgotPassword(request):
 
 #New Password
 def NewPasswordPage(request, username):
-    userid = get_object_or_404(User, username=username)
+    userid = User.objects.get(username=username)
     errors = {}
     if request.method== "POST":
         password = request.POST.get("password")
@@ -271,7 +346,7 @@ def NewPasswordPage(request, username):
 
         # If there are errors, re-render the form with errors
         if errors:
-            return render(request, 'newpassword.html', {'errors': errors})      
+            return render(request, 'newpassword.html', {'errors': errors, 'username': username})      
         
         # Set new password and save user
         userid.set_password(password)
@@ -279,9 +354,14 @@ def NewPasswordPage(request, username):
         return redirect('message')
     return render(request, 'newpassword.html')
 
+#OTP Message 
+def OTPMessage(request):
+    return render(request, 'otp_message.html')
+
 #Message 
 def Message(request):
     return render(request, 'message.html')
+
 
 #Booking 
 def Booking(request):
@@ -321,7 +401,7 @@ def my_account(request):
     return render(request, 'profile.html', {'user': user})
 
 def saved(request):
-    return render(request, 'home.html')
+    return render(request, 'saved.html')
 
 
 def bookings(request):

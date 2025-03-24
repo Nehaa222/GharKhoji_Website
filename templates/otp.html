@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/otp.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <form action="#" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <div class="form-section">
+                <div class="otp-icon"><i class="fa-solid fa-key"></i></div>
+                <h1>Enter OTP</h1>
+                <p>For verification, please enter the OTP sent to your email.</p>
+                
+                <!-- Messages Box -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="message-box {{ message.tags }}">
+                            <i class="fa-solid fa-info-circle"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- OTP Field -->
+                <div class="input-group">
+                    <input type="text" placeholder="Enter OTP" id="otp" name="otp" class="form-control {% if errors.otp %}is-invalid{% endif %}">
+                    {% if errors.otp %}
+                        <div class="invalid-feedback">{{ errors.otp }}</div>
+                    {% endif %}
+                </div>
+    
+                <button type="submit" class="verify-button">Verify OTP</button>
+                <!-- Resend OTP Section -->
+                <p>Didn't receive an OTP? 
+                    <button type="button" id="resend-btn" onclick="resendOTP()" disabled>Get new code (60 seconds)</button>
+                </p>
+            </div>    
+        </div>
+    </form>
+    <script>
+        let timer = 60; // Set timer to 60 seconds
+        function startTimer() {
+            const resendButton = document.getElementById("resend-btn");
+            const timerSpan = document.getElementById("timer");
+
+            resendButton.disabled = true;
+            resendButton.style.color = "grey";
+            resendButton.innerText = `Get new code (${timer} seconds)`;
+
+            const interval = setInterval(() => {
+                timer--;
+                resendButton.innerText = `Get new code (${timer} seconds)`;
+
+                if (timer <= 0) {
+                    clearInterval(interval);
+                    resendButton.disabled = false;
+                    resendButton.style.color = "blue";
+                    resendButton.innerText = "Get new code";
+                    resendButton.style.cursor = "pointer";
+                }
+            }, 1000);
+        }
+
+        function resendOTP() {
+            if (timer > 0) return; // Prevent resending before timer ends
+
+            timer = 60; // Reset timer
+            startTimer(); // Restart timer
+            window.location.href = "{% url 'resend_otp' %}"; // Trigger OTP resend
+        }
+
+        window.onload = startTimer;
+    </script>
+</body>
+</html>
